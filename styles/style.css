@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #f6f7f8;
+}
+
+#cart-items {
+    max-height: 300px; /* Altura máxima antes de aparecer o scroll */
+    overflow-y: auto;  /* Permite o scroll vertical */
+    padding: 10px; /* Adiciona espaçamento interno */
+}
