@@ -164,6 +164,30 @@ checkoutBtn.addEventListener("click", function(){
         return;
     }
 
+    // Calcula o total do carrinho
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    if (total < 30) {
+        Toastify({
+            text: "O valor mínimo para finalizar o pedido é de R$30,00.",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                background: "#ef4444",
+            },
+        }).showToast();
+        return;
+    }
+
+    if (addressInput.value === "") {
+        addressWarn.classList.remove("hidden");
+        addressInput.classList.add("border-red-500");
+        return;
+    }    
+
     //Enviar o pedido para o Whats
     const cartItems = cart.map((item) => {
         return(
@@ -183,20 +207,25 @@ checkoutBtn.addEventListener("click", function(){
 
 
 // Verifica o horario de funcionamento
-function checkEskmelOpen(){
+function checkEskmelOpen() {
     const data = new Date();
     const hora = data.getHours();
-    return hora >= 10 && hora < 19;
+    const diaSemana = data.getDay(); // 0 = Domingo, 6 = Sábado
+
+    if (diaSemana >= 1 && diaSemana <= 5) {
+        return hora >= 10 && hora < 19; // Segunda a Sexta
+    } else {
+        return hora >= 10 && hora < 18; // Sábado e Domingo
+    }
 }
 
-
-const spanItem = document.getElementById("date-span")
+const spanItem = document.getElementById("date-span");
 const isOpen = checkEskmelOpen();
 
-if(isOpen){
+if (isOpen) {
     spanItem.classList.remove("bg-red-500");
     spanItem.classList.add("bg-green-600");
-}else{
+} else {
     spanItem.classList.remove("bg-green-600");
     spanItem.classList.add("bg-red-500");
 }
